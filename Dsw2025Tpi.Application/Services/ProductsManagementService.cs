@@ -92,6 +92,8 @@ namespace Dsw2025Tpi.Application.Services
         {
             _logger.LogInformation("Consulta de productos. IncludeInactive: {IncludeInactive}, StatusFilter: {Status}", includeInactive, filter.Status);
 
+            // CAMBIO: el término de búsqueda se pasa a minúsculas una sola vez, antes del filtro
+            var search = filter.Search?.ToLower();
             
             bool? isActiveFilter = null;
             if (!string.IsNullOrEmpty(filter.Status) && bool.TryParse(filter.Status, out bool parsedStatus))
@@ -112,9 +114,9 @@ namespace Dsw2025Tpi.Application.Services
 
                 
                 (string.IsNullOrEmpty(filter.Search)
-                    || (p.Name != null && p.Name.Contains(filter.Search))
-                    || (p.InternalCode != null && p.InternalCode.Contains(filter.Search))
-                    || (p.Sku != null && p.Sku.Contains(filter.Search))
+                    || (p.Name != null && p.Name.ToLower().Contains(filter.Search))
+                    || (p.InternalCode != null && p.InternalCode.ToLower().Contains(filter.Search))
+                    || (p.Sku != null && p.Sku.ToLower().Contains(filter.Search))
                 )
             );
 
