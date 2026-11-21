@@ -67,17 +67,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
             var appDb = scope.ServiceProvider.GetRequiredService<Dsw2025TpiContext>();
             var creator = appDb.Database.GetService<IDatabaseCreator>() as IRelationalDatabaseCreator;
-            if (creator != null)
-            {
-                try
-                {
-                    creator.CreateTables();
-                }
-                catch
-                {
-                    // Ignore if already created
-                }
-            }
+            creator?.CreateTables();
         });
     }
 
